@@ -13,6 +13,7 @@ export default function Navbar() {
     { path: '/urunler', name: t('products') },
     { path: '/hesaplama', name: t('calculator') },
     { path: '/bloglar', name: t('blogs') },
+    { path: '/about', name: t('about') },
     { path: '/iletisim', name: t('contact') }
   ];
 

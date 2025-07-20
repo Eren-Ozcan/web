@@ -88,7 +88,7 @@ export default function CalculatorForm() {
         >
           {Object.keys(config.products).map((p) => (
             <option key={p} value={p}>
-              {p}
+              {t(p)}
             </option>
           ))}
         </select>
@@ -143,7 +143,7 @@ export default function CalculatorForm() {
                   setOptions({ ...options, [key]: e.target.checked })
                 }
               />
-              <span>{val.label}</span>
+              <span>{t(val.label)}</span>
             </label>
           ))}
         </div>

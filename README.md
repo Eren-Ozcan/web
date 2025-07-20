@@ -42,6 +42,12 @@ npm run dev
 
 Vite will start the client on `http://localhost:5173` (or the next available port). The client expects the API to be running at `http://localhost:5000`.
 
+Set `VITE_ADMIN_PASSWORD` in a `.env` file inside the `client` folder to protect the admin page:
+
+```bash
+echo "VITE_ADMIN_PASSWORD=yourpassword" > client/.env
+```
+
 ## Testing
 
 No automated tests are currently defined. The `npm test` command in both the client and server simply prints a message so the command does not fail by default.

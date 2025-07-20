@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
-import { loadContent, saveContent, ContentData } from '../content';
+import api from '../api';
+import { ContentData } from '../content';
 
 const ContentAdmin: React.FC = () => {
   const { t, i18n: i18next } = useTranslation();
   const languages = Object.keys(i18next.options.resources || {});
   const [lang, setLang] = useState<string>(i18next.language);
-  const [content, setContent] = useState<ContentData>(loadContent());
+  const [content, setContent] = useState<ContentData | null>(null);
+  const [isAuthed, setIsAuthed] = useState<boolean>(
+    localStorage.getItem('isAuthenticated') === 'true'
+  );
+  const [password, setPassword] = useState('');
   const [section, setSection] = useState<
     'blogs' | 'projects' | 'reviews' | 'products' | 'basic' | 'categories'
   >('blogs');
@@ -27,30 +32,54 @@ const ContentAdmin: React.FC = () => {
     };
   }, [i18next]);
 
+  // Load content and translations after authentication
+  useEffect(() => {
+    if (!isAuthed) return;
+    const fetchData = async () => {
+      try {
+        const [cRes, tRes] = await Promise.all([
+          api.get<ContentData>('/api/content'),
+          api.get<Record<string, any>>('/api/translations')
+        ]);
+        setContent(cRes.data);
+        Object.entries(tRes.data).forEach(([lng, res]) => {
+          i18next.addResourceBundle(lng, 'translation', res as any, true, true);
+        });
+      } catch (err) {
+        console.error('Failed to load admin data', err);
+      }
+    };
+    fetchData();
+  }, [isAuthed, i18next]);
+
   const updateTranslation = (key: string, value: string) => {
     i18next.addResource(lang, 'translation', key, value);
   };
 
   const entries =
-    section === 'blogs'
-      ? content.blogs
-      : section === 'projects'
-        ? content.projects
-        : section === 'reviews'
-          ? content.reviews
-          : section === 'products'
-            ? content.products
-            : [];
+    !content
+      ? []
+      : section === 'blogs'
+        ? content.blogs
+        : section === 'projects'
+          ? content.projects
+          : section === 'reviews'
+            ? content.reviews
+            : section === 'products'
+              ? content.products
+              : [];
 
   const setEntries = (items: any[]) => {
+    if (!content) return;
     const newContent = { ...content } as any;
     newContent[section] = items;
     setContent(newContent);
   };
 
-  const categoryOptions = (content.categories as any)[section] || [];
+  const categoryOptions = content ? (content.categories as any)[section] || [] : [];
 
   const addEntry = () => {
+    if (!content) return;
     const id = Date.now();
     const titleKey = `${section}_title_${id}`;
     const textKey = `${section}_text_${id}`;
@@ -84,11 +113,46 @@ const ContentAdmin: React.FC = () => {
     setEntries(newEntries);
   };
 
-  const saveAll = () => {
-    saveContent(content);
-    localStorage.setItem('translations', JSON.stringify(i18n.store.data));
-    alert(t('admin_saved'));
+  const saveAll = async () => {
+    if (!content) return;
+    try {
+      await Promise.all([
+        api.post('/api/content', content),
+        api.post('/api/translations', i18n.store.data)
+      ]);
+      localStorage.setItem('translations', JSON.stringify(i18n.store.data));
+      alert(t('admin_saved'));
+    } catch (err) {
+      console.error(err);
+      alert(t('admin_save_error'));
+    }
   };
+
+  if (!isAuthed) {
+    return (
+      <div className="p-4 space-y-4 max-w-sm mx-auto">
+        <h1 className="text-2xl font-bold text-center">{t('admin_title')}</h1>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder={t('admin_password')}
+          className="border p-2 w-full"
+        />
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded w-full"
+          onClick={() => {
+            if (password === import.meta.env.VITE_ADMIN_PASSWORD) {
+              localStorage.setItem('isAuthenticated', 'true');
+              setIsAuthed(true);
+            }
+          }}
+        >
+          {t('admin_login')}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 space-y-4">

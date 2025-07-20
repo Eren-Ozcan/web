@@ -5,6 +5,7 @@ import Contact from './pages/Contact';
 import Calculate from './pages/Calculate';
 import Blogs from './pages/Blogs';
 import Products from './pages/Products';
+import ProductPage from './pages/ProductPage';
 import Projects from './pages/Projects';
 import Reviews from './pages/Reviews';
 import About from './pages/About';
@@ -21,6 +22,9 @@ export default function AppRoutes() {
         <Route path="/hesaplama" element={<Navigate to="/calculator" replace />} />
         <Route path="/bloglar" element={<Blogs />} />
         <Route path="/urunler" element={<Products />} />
+        <Route path="/urunler/:slug" element={<ProductPage />} />
+        <Route path="/products" element={<Navigate to="/urunler" replace />} />
+        <Route path="/products/:slug" element={<ProductPage />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/about" element={<About />} />

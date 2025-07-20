@@ -1,12 +1,48 @@
 import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@example.com';
+const ADMIN_PASSWORD_HASH =
+  process.env.ADMIN_PASSWORD_HASH ||
+  crypto.createHash('sha256').update('password123').digest('hex');
+const JWT_SECRET = process.env.JWT_SECRET || 'mysecret';
+
 app.use(cors());
 app.use(express.json());
 
+function verifyToken(req, res, next) {
+  const auth = req.headers.authorization || '';
+  const token = auth.startsWith('Bearer ') ? auth.slice(7) : null;
+  if (!token) return res.status(401).json({ message: 'Unauthorized' });
+  try {
+    req.user = jwt.verify(token, JWT_SECRET);
+    next();
+  } catch {
+    res.status(401).json({ message: 'Unauthorized' });
+  }
+}
+
+app.post('/api/admin/login', (req, res) => {
+  const { email, password } = req.body;
+  const hash = crypto.createHash('sha256').update(password || '').digest('hex');
+  if (email !== ADMIN_EMAIL || hash !== ADMIN_PASSWORD_HASH) {
+    return res.status(401).json({ message: 'Invalid credentials' });
+  }
+  const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: '1h' });
+  res.json({ token });
+});
+
+app.get('/api/admin/check', verifyToken, (req, res) => {
+  res.json({ ok: true });
+});
 app.get('/', (req, res) => {
   res.send('Sunucu çalışıyor ✅');
 });

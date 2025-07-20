@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
 import { loadContent, saveContent, ContentData } from '../content';
+import { useNavigate } from 'react-router-dom';
 
 const ContentAdmin: React.FC = () => {
   const { t, i18n: i18next } = useTranslation();
+  const navigate = useNavigate();
   const languages = Object.keys(i18next.options.resources || {});
   const [lang, setLang] = useState<string>(i18next.language);
   const [content, setContent] = useState<ContentData>(loadContent());
@@ -26,6 +28,11 @@ const ContentAdmin: React.FC = () => {
       i18next.off('languageChanged', handler);
     };
   }, [i18next]);
+
+  const logout = () => {
+    localStorage.removeItem('adminToken');
+    navigate('/admin-login');
+  };
 
   const updateTranslation = (key: string, value: string) => {
     i18next.addResource(lang, 'translation', key, value);
@@ -92,7 +99,15 @@ const ContentAdmin: React.FC = () => {
 
   return (
     <div className="p-4 space-y-4">
-      <h1 className="text-2xl font-bold">{t('admin_title')}</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">{t('admin_title')}</h1>
+        <button
+          onClick={logout}
+          className="bg-red-500 text-white px-3 py-1 rounded"
+        >
+          Logout
+        </button>
+      </div>
 
       {/* Dil seçimi */}
       <div className="space-x-2">

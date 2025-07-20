@@ -8,6 +8,7 @@ export default function Navbar() {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const isAdmin = !!localStorage.getItem('adminToken');
   const menuItems = [
     { path: '/', name: t('home') },
     { path: '/urunler', name: t('products') },
@@ -15,7 +16,7 @@ export default function Navbar() {
     { path: '/bloglar', name: t('blogs') },
     { path: '/iletisim', name: t('contact') },
     { path: '/about', name: t('about') },
-    { path: '/content-admin', name: 'Content' }
+    ...(isAdmin ? [{ path: '/admin', name: 'Admin' }] : [])
   ];
 
   const changeLanguage = (lng: 'tr' | 'en') => {

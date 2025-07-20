@@ -10,6 +10,8 @@ import Reviews from './pages/Reviews';
 import About from './pages/About';
 import Article from './pages/Article';
 import ContentAdmin from './pages/ContentAdmin';
+import AdminLogin from './pages/AdminLogin';
+import ProtectedRoute from './ProtectedRoute';
 import Layout from './Layout';
 
 export default function AppRoutes() {
@@ -27,7 +29,15 @@ export default function AppRoutes() {
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/about" element={<About />} />
         <Route path="/article/:topic" element={<Article />} />
-        <Route path="/content-admin" element={<ContentAdmin />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <ContentAdmin />
+            </ProtectedRoute>
+          }
+        />
       </Route>
     </Routes>
   );

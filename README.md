@@ -42,6 +42,12 @@ npm run dev
 
 Vite will start the client on `http://localhost:5173` (or the next available port). The client expects the API to be running at `http://localhost:5000`.
 
+## Admin Access
+
+The admin panel lives at `/admin` and is protected by a JSON Web Token (JWT). Use `/admin-login` to authenticate.
+
+Configure credentials by creating a `.env` file in the `server` directory using the values from `.env.example`.
+
 ## Testing
 
 No automated tests are currently defined. The `npm test` command in both the client and server simply prints a message so the command does not fail by default.

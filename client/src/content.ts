@@ -1,6 +1,7 @@
 export interface BlogPost {
   id: number;
   titleKey: string;
+  image: string;
   category: string;
   textKey: string;
 }
@@ -41,13 +42,32 @@ export interface ContentData {
   reviews: Review[];
   products: Product[];
   categories: Categories;
+  featuredProjects: number[];
 }
 
 const defaultData: ContentData = {
   blogs: [
-    { id: 1, titleKey: 'blog1', category: 'news', textKey: 'article_lorem1' },
-    { id: 2, titleKey: 'blog2', category: 'tips', textKey: 'article_lorem2' },
-    { id: 3, titleKey: 'blog3', category: 'news', textKey: 'article_lorem3' }
+    {
+      id: 1,
+      titleKey: 'blog1',
+      category: 'news',
+      textKey: 'article_lorem1',
+      image: '/images/house1.jpg'
+    },
+    {
+      id: 2,
+      titleKey: 'blog2',
+      category: 'tips',
+      textKey: 'article_lorem2',
+      image: '/images/house2.jpg'
+    },
+    {
+      id: 3,
+      titleKey: 'blog3',
+      category: 'news',
+      textKey: 'article_lorem3',
+      image: '/images/house3.jpg'
+    }
   ],
   projects: [
     {
@@ -101,7 +121,8 @@ const defaultData: ContentData = {
     projects: ['glass', 'pvc', 'balcony'],
     reviews: ['glass', 'pvc'],
     products: ['glass', 'door', 'balcony', 'garden', 'office', 'facade']
-  }
+  },
+  featuredProjects: [1, 2, 3]
 };
 
 export function loadContent(): ContentData {
@@ -110,7 +131,14 @@ export function loadContent(): ContentData {
     try {
       const data = JSON.parse(stored);
       if (data && typeof data === 'object' && 'blogs' in data) {
-        return data as ContentData;
+        return {
+          ...defaultData,
+          ...data,
+          featuredProjects:
+            Array.isArray(data.featuredProjects) && data.featuredProjects.length
+              ? data.featuredProjects
+              : defaultData.featuredProjects
+        };
       }
     } catch {
       // ignore parse errors and fall back to defaults

@@ -37,6 +37,13 @@ export default function Blogs() {
             onClick={() => navigate(`/article/${toSlug(t(post.titleKey))}`)}
             className="bg-white shadow rounded p-4 cursor-pointer"
           >
+            {post.image && (
+              <img
+                src={post.image}
+                alt={t(post.titleKey)}
+                className="w-full h-40 object-cover mb-2 rounded"
+              />
+            )}
             <h3 className="font-semibold text-lg mb-2">{t(post.titleKey)}</h3>
             <p className="text-sm text-gray-600 mb-2">{t(post.textKey)}</p>
           </div>

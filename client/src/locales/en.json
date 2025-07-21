@@ -116,5 +116,7 @@
   "admin_label": "Label",
   "admin_multiplier": "Multiplier",
   "admin_add_product": "Add Product",
-  "admin_add_feature": "Add Feature"
+  "admin_add_feature": "Add Feature",
+  "admin_featured": "Featured",
+  "admin_featured_limit": "You can select up to 3 projects"
 }

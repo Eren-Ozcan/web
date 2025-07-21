@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import api from '../api';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Project, Review } from '../content';
@@ -8,22 +7,14 @@ import { useContent } from '../ContentContext';
 export default function About() {
   const { t } = useTranslation();
   const { content } = useContent();
-  const [highlightProjects, setHighlightProjects] = useState<Project[]>([]);
+  const highlightProjects = content.projects
+    .filter((p) => content.featuredProjects.includes(p.id))
+    .slice(0, 3);
   const [projectFilter, setProjectFilter] = useState('all');
   const [reviewFilter, setReviewFilter] = useState('all');
   const navigate = useNavigate();
 
   const toSlug = (s: string) => encodeURIComponent(s.toLowerCase().replace(/\s+/g, '-'));
-
-  useEffect(() => {
-    api
-      .get<Project[]>('/api/projects?highlight=true')
-      .then((res) => {
-        const data = Array.isArray(res.data) ? res.data : [];
-        setHighlightProjects(data);
-      })
-      .catch(() => setHighlightProjects([]));
-  }, []);
 
   const projectData: Project[] = content.projects;
   const reviewData: Review[] = content.reviews;

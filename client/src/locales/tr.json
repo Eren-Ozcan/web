@@ -116,5 +116,7 @@
   "admin_label": "Etiket",
   "admin_multiplier": "Katsayı",
   "admin_add_product": "Ürün Ekle",
-  "admin_add_feature": "Özellik Ekle"
+  "admin_add_feature": "Özellik Ekle",
+  "admin_featured": "Öne Çıkan",
+  "admin_featured_limit": "En fazla 3 proje seçebilirsiniz"
 }

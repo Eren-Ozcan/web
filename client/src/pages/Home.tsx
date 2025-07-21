@@ -121,7 +121,14 @@ const Home: React.FC = () => {
       <div className="mt-20 px-4 max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">{t('projects')}</h2>
         <div className="grid md:grid-cols-3 gap-6">
-          {content.projects.slice(0, 3).map((p) => (
+          {(content.featuredProjects.length
+            ? content.projects.filter((p) =>
+                content.featuredProjects.includes(p.id)
+              )
+            : content.projects
+          )
+            .slice(0, 3)
+            .map((p) => (
             <div
               key={p.id}
               onClick={() => navigate(`/article/${toSlug(t(p.titleKey))}`)}
@@ -133,7 +140,7 @@ const Home: React.FC = () => {
                 <p className="text-gray-600 text-sm">{t(p.descriptionKey)}</p>
               </div>
             </div>
-          ))}
+            ))}
         </div>
       </div>
 

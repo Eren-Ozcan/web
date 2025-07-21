@@ -105,6 +105,12 @@ const ContentAdmin: React.FC = () => {
 
   const removeEntry = (id: number) => {
     setEntries(entries.filter((e) => e.id !== id));
+    if (section === 'projects') {
+      setContent({
+        ...content,
+        featuredProjects: content.featuredProjects.filter((p) => p !== id)
+      });
+    }
   };
 
   const handleChange = (index: number, field: string, value: string) => {
@@ -119,6 +125,20 @@ const ContentAdmin: React.FC = () => {
     }
     newEntries[index] = { ...item };
     setEntries(newEntries);
+  };
+
+  const toggleFeatured = (id: number) => {
+    let list = content.featuredProjects;
+    if (list.includes(id)) {
+      list = list.filter((f) => f !== id);
+    } else {
+      if (list.length >= 3) {
+        alert(t('admin_featured_limit'));
+        return;
+      }
+      list = [...list, id];
+    }
+    setContent({ ...content, featuredProjects: list });
   };
 
   const saveAll = async () => {
@@ -408,6 +428,9 @@ const ContentAdmin: React.FC = () => {
               {section !== 'products' && <th className="border p-2">{t('admin_text')}</th>}
               <th className="border p-2">{t('admin_image')}</th>
               <th className="border p-2">{t('admin_category')}</th>
+              {section === 'projects' && (
+                <th className="border p-2">{t('admin_featured')}</th>
+              )}
               <th className="border p-2">{t('admin_actions')}</th>
             </tr>
           </thead>
@@ -470,6 +493,15 @@ const ContentAdmin: React.FC = () => {
                     ))}
                   </select>
                 </td>
+                {section === 'projects' && (
+                  <td className="border p-2 text-center">
+                    <input
+                      type="checkbox"
+                      checked={content.featuredProjects.includes(item.id)}
+                      onChange={() => toggleFeatured(item.id)}
+                    />
+                  </td>
+                )}
                 <td className="border p-2">
                   <button
                     onClick={() => removeEntry(item.id)}

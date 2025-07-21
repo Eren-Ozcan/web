@@ -75,6 +75,13 @@ Run the script with phpMyAdmin or the MySQL CLI:
 mysql -u admin -p < server/init_db.sql
 ```
 
+### Windows users
+
+PowerShell does not support using `<` for input redirection. Use one of these commands instead:
+
+1. `cmd /c "mysql -u admin -p < server/init_db.sql"`
+2. `Get-Content server/init_db.sql | mysql -u admin -p`
+
 ## Login API
 
 The server exposes a `/api/login` endpoint for obtaining a JWT. User credentials

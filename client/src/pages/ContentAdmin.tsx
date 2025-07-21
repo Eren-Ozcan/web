@@ -481,6 +481,32 @@ const ContentAdmin: React.FC = () => {
               </tr>
             ))}
           </tbody>
+
+        {section === 'projects' && (
+          <div className="my-4">
+            <label className="font-semibold block mb-2">{t('admin_featured_projects')}</label>
+            <div className="flex space-x-2">
+              {[0, 1, 2].map((i) => (
+                <select
+                  key={i}
+                  className="border p-1"
+                  value={content.featuredProjects[i] || content.projects[0]?.id || 0}
+                  onChange={(e) => {
+                    const ids = [...content.featuredProjects];
+                    ids[i] = parseInt(e.target.value, 10);
+                    setContent({ ...content, featuredProjects: ids });
+                  }}
+                >
+                  {content.projects.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {t(p.titleKey)}
+                    </option>
+                  ))}
+                </select>
+              ))}
+            </div>
+          </div>
+        )}
         </table>
       )}
 

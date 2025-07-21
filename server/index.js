@@ -116,11 +116,26 @@ async function loadData() {
         ]);
       }
     }
+
+    if (!Array.isArray(contentData.featuredProjects)) {
+      contentData.featuredProjects = contentData.projects
+        .slice(0, 3)
+        .map((p) => p.id);
+      await pool.query('UPDATE content SET data = ? WHERE id = 1', [
+        JSON.stringify(contentData)
+      ]);
+      saveJson('content.json', contentData);
+    }
   } catch (err) {
     console.error('Failed to load from database, falling back to files', err);
     contentData = loadJson('content.json');
     translationsData = { en: loadJson('en.json'), tr: loadJson('tr.json') };
     pricingData = loadJson('pricing.json');
+    if (!Array.isArray(contentData.featuredProjects)) {
+      contentData.featuredProjects = contentData.projects
+        .slice(0, 3)
+        .map((p) => p.id);
+    }
   }
 }
 
@@ -173,6 +188,26 @@ app.post('/api/content', async (req, res) => {
     console.error('Failed to save content', err);
     res.status(500).json({ error: 'Could not save content' });
   }
+});
+
+app.get('/api/projects', (req, res) => {
+  const { highlight, limit } = req.query;
+  let projects = contentData.projects;
+  if (highlight === 'true') {
+    const featured = Array.isArray(contentData.featuredProjects)
+      ? contentData.featuredProjects
+          .map((id) => projects.find((p) => p.id === id))
+          .filter(Boolean)
+      : [];
+    projects = featured.length ? featured : projects.slice(0, 3);
+  }
+  if (limit) {
+    const n = parseInt(limit, 10);
+    if (!isNaN(n)) {
+      projects = projects.slice(0, n);
+    }
+  }
+  res.json(projects);
 });
 
 // Translations API

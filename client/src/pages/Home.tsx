@@ -101,17 +101,22 @@ const Home: React.FC = () => {
       <div className="mt-20 px-4 max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">{t('blogs')}</h2>
         <div className="grid md:grid-cols-3 gap-6">
-          {[t('blog1'), t('blog2'), t('blog3')].map((title, idx) => (
+          {content.blogs.slice(0, 3).map((post) => (
             <div
-              key={idx}
-              onClick={() => navigate(`/article/${toSlug(title)}`)}
-              className="bg-white rounded shadow-md p-4 hover:shadow-lg transition cursor-pointer"
+              key={post.id}
+              onClick={() => navigate(`/article/${toSlug(t(post.titleKey))}`)}
+              className="bg-white rounded shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer"
             >
-              <h3 className="text-xl font-semibold mb-2 text-blue-600">{title}</h3>
-              <p className="text-gray-600 text-sm">{t('blog_sample_text')}</p>
-              <span className="mt-2 text-sm text-blue-500 hover:underline inline-block">
-                {t('readMore')}
-              </span>
+              {post.image && (
+                <img src={post.image} alt={t(post.titleKey)} className="w-full h-40 object-cover" />
+              )}
+              <div className="p-4">
+                <h3 className="text-xl font-semibold mb-2 text-blue-600">{t(post.titleKey)}</h3>
+                <p className="text-gray-600 text-sm">{t(post.textKey)}</p>
+                <span className="mt-2 text-sm text-blue-500 hover:underline inline-block">
+                  {t('readMore')}
+                </span>
+              </div>
             </div>
           ))}
         </div>
@@ -121,7 +126,10 @@ const Home: React.FC = () => {
       <div className="mt-20 px-4 max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">{t('projects')}</h2>
         <div className="grid md:grid-cols-3 gap-6">
-          {content.projects.slice(0, 3).map((p) => (
+          {(content.featuredProjects
+            .map((id) => content.projects.find((p) => p.id === id))
+            .filter(Boolean) as typeof content.projects).slice(0, 3)
+            .map((p) => (
             <div
               key={p.id}
               onClick={() => navigate(`/article/${toSlug(t(p.titleKey))}`)}
@@ -133,7 +141,7 @@ const Home: React.FC = () => {
                 <p className="text-gray-600 text-sm">{t(p.descriptionKey)}</p>
               </div>
             </div>
-          ))}
+            ))}
         </div>
       </div>
 

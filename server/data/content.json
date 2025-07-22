@@ -1,4 +1,3 @@
-  ,
       "news": { "tr": "Haber", "en": "News" },
       "tips": { "tr": "İpucu", "en": "Tips" }
     },
@@ -21,3 +20,4 @@
     }
   }
 }
+  ],

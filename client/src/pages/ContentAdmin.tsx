@@ -195,22 +195,46 @@ const ContentAdmin: React.FC = () => {
 
       {/* BASIC */}
       {section === 'basic' ? (
-        <div className="space-y-2">
-          {['mission', 'mission_text', 'vision', 'vision_text', 'values', 'values_text'].map((k) => (
-            <div key={k} className="flex items-center space-x-2">
-              <label className="w-32 font-semibold">{t(k.endsWith('_text') ? `${k}_label` : k)}</label>
-              <input
-                className="border p-1 flex-1"
-                value={(basicTexts as any)[k]}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  updateTranslation(k, val);
-                  setBasicTexts((prev) => ({ ...prev, [k]: val }));
-                }}
-              />
-            </div>
-          ))}
-        </div>
+        <table className="w-full border">
+          <thead>
+            <tr>
+              <th className="border p-2 w-1/2">{t('admin_title_label')}</th>
+              <th className="border p-2 w-1/2">{t('admin_text')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              { titleKey: 'mission', textKey: 'mission_text' },
+              { titleKey: 'vision', textKey: 'vision_text' },
+              { titleKey: 'values', textKey: 'values_text' },
+            ].map(({ titleKey, textKey }) => (
+              <tr key={titleKey}>
+                <td className="border p-2">
+                  <input
+                    className="border p-1 w-full"
+                    value={(basicTexts as any)[titleKey]}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      updateTranslation(titleKey, val);
+                      setBasicTexts((prev) => ({ ...prev, [titleKey]: val }));
+                    }}
+                  />
+                </td>
+                <td className="border p-2">
+                  <input
+                    className="border p-1 w-full"
+                    value={(basicTexts as any)[textKey]}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      updateTranslation(textKey, val);
+                      setBasicTexts((prev) => ({ ...prev, [textKey]: val }));
+                    }}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       ) : section === 'categories' ? (
         <div className="space-y-2">
           <div className="space-x-2 mb-2">

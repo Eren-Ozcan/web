@@ -67,12 +67,12 @@ function normalizeCategories(cat) {
     if (isNumericObj(enArr))
       enArr = Object.keys(enArr)
         .filter((k) => k !== 'en' && k !== 'tr')
-        .sort((a, b) => a - b)
+        .sort((a, b) => Number(a) - Number(b))
         .map((k) => enArr[k]);
     if (isNumericObj(trArr))
       trArr = Object.keys(trArr)
         .filter((k) => k !== 'en' && k !== 'tr')
-        .sort((a, b) => a - b)
+        .sort((a, b) => Number(a) - Number(b))
         .map((k) => trArr[k]);
     if (!Array.isArray(enArr) && !Array.isArray(trArr)) return enArr || {};
     const map = {};

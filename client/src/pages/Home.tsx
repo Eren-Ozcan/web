@@ -19,6 +19,7 @@ const Home: React.FC = () => {
   const handleResume = () => swiperRef.current?.autoplay?.start();
 
   const sliderData = content.sliders || [];
+  const bulletColor = content.sliderBulletColor || '#3b82f6';
 
 
   return (
@@ -46,6 +47,7 @@ const Home: React.FC = () => {
             navigation={true}
             onSwiper={(swiper) => (swiperRef.current = swiper)}
             className="w-full h-full"
+            style={{ '--swiper-theme-color': bulletColor } as React.CSSProperties}
           >
             {sliderData.map((slide, idx) => (
               <SwiperSlide key={idx}>

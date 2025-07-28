@@ -140,6 +140,7 @@ export async function loadData() {
     if (!cRows.length) {
       contentData = loadJson('content.json');
       if (!contentData.sliders) contentData.sliders = [];
+      if (!contentData.sliderBulletColor) contentData.sliderBulletColor = '#3b82f6';
       contentData.categories = normalizeCategories(contentData.categories);
       await pool.query('INSERT INTO content (id, data) VALUES (1, ?)', [
         JSON.stringify(contentData)
@@ -150,10 +151,12 @@ export async function loadData() {
       if (parsed && Object.keys(parsed).length) {
         contentData = parsed;
         if (!contentData.sliders) contentData.sliders = [];
+        if (!contentData.sliderBulletColor) contentData.sliderBulletColor = '#3b82f6';
         contentData.categories = normalizeCategories(contentData.categories);
       } else {
         contentData = loadJson('content.json');
         if (!contentData.sliders) contentData.sliders = [];
+        if (!contentData.sliderBulletColor) contentData.sliderBulletColor = '#3b82f6';
         contentData.categories = normalizeCategories(contentData.categories);
         await pool.query('UPDATE content SET data = ? WHERE id = 1', [
           JSON.stringify(contentData)
@@ -211,6 +214,7 @@ export async function loadData() {
     console.error('Failed to load from database, falling back to files', err);
     contentData = loadJson('content.json');
     if (!contentData.sliders) contentData.sliders = [];
+    if (!contentData.sliderBulletColor) contentData.sliderBulletColor = '#3b82f6';
     contentData.categories = normalizeCategories(contentData.categories);
     translationsData = { en: loadJson('en.json'), tr: loadJson('tr.json') };
     pricingData = normalizePricing(loadJson('pricing.json'));

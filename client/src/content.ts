@@ -91,10 +91,12 @@ export interface ContentData {
   reviews: Review[];
   products: Product[];
   sliders: Slide[];
+  sliderBulletColor: string;
   categories: Categories;
 }
 
 const defaultData: ContentData = {
+  sliderBulletColor: '#3b82f6',
   blogs: [
     {
       id: 1,
@@ -337,6 +339,9 @@ export function loadContent(): ContentData {
           (data as any).categories = normalizeCategories(cat);
         }
         (data as any).sliders = normalizeSliders((data as any).sliders);
+        if (!(data as any).sliderBulletColor) {
+          (data as any).sliderBulletColor = '#3b82f6';
+        }
         return data as ContentData;
       }
     } catch {

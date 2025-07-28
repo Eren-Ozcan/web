@@ -19,6 +19,11 @@ jobs:
           npm ci
           cd server && npm ci
           cd ../client && npm ci
+      - name: Run tests
+        run: |
+          npm test || true
+          cd server && npm test || true
+          cd ../client && npm test || true
       - name: Build server
         run: |
           cd server

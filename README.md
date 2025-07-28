@@ -147,4 +147,4 @@ npm run build --workspace=server
 npm run build --workspace=client
 ```
 
-A sample GitHub Actions workflow under `.github/workflows/ci.yml` installs dependencies and runs these commands automatically on pushes and pull requests.
+A sample GitHub Actions workflow under `.github/workflows/ci.yml` installs dependencies, runs tests and executes these build commands automatically on pushes and pull requests.

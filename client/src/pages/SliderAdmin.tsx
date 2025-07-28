@@ -17,11 +17,7 @@ const SliderAdmin: React.FC = () => {
       const load = async () => {
         try {
           const res = await api.get('/api/content');
-          try {
-            localStorage.setItem('content', JSON.stringify(res.data));
-          } catch {
-            // ignore storage errors
-          }
+          localStorage.setItem('content', JSON.stringify(res.data));
           setContent(res.data);
         } catch (err) {
           console.error(err);
@@ -153,11 +149,7 @@ const SliderAdmin: React.FC = () => {
     try {
       const updated = { ...content, sliders: slides };
       await api.post('/api/content', updated);
-      try {
-        localStorage.setItem('content', JSON.stringify(updated));
-      } catch {
-        // ignore storage errors (e.g. quota exceeded)
-      }
+      localStorage.setItem('content', JSON.stringify(updated));
       alert(t('admin_saved'));
     } catch (err) {
       console.error('Save failed', err);
@@ -296,4 +288,3 @@ const SliderAdmin: React.FC = () => {
 };
 
 export default SliderAdmin;
-

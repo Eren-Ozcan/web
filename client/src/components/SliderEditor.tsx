@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../api';
 import { useContent } from '../ContentContext';
@@ -11,13 +11,6 @@ const SliderEditor: React.FC = () => {
   const slides = content.sliders || [];
   const current = slides[index];
 
-  useEffect(() => {
-    if (!slides.length) return;
-    const timer = setInterval(() => {
-      setIndex((i) => (i + 1) % slides.length);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, [slides.length]);
   const routeOptions = content.products.map((p) => ({
     value: `/article/${p.id}`,
     label: t(p.titleKey)

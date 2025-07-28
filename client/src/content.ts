@@ -51,10 +51,10 @@ export interface Slide {
 
 function normalizeSliders(data: any): Slide[] {
   if (!Array.isArray(data)) return [];
-  return data.map((s) => ({
+  return data.map((s: any) => ({
     image: s.image || '',
     hotspots: Array.isArray(s.hotspots)
-      ? s.hotspots.map((h) => ({
+      ? s.hotspots.map((h: any) => ({
           x: typeof h.x === 'number' ? h.x : Number(h.x) || 0,
           y: typeof h.y === 'number' ? h.y : Number(h.y) || 0,
           label: h.label || '',

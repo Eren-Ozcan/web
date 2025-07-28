@@ -10,6 +10,7 @@ const SliderEditor: React.FC = () => {
 
   const slides = content.sliders || [];
   const current = slides[index];
+  const bulletColor = content.sliderBulletColor || '#3b82f6';
   const routeOptions = content.products.map((p) => ({
     value: `/article/${p.id}`,
     label: t(p.titleKey)
@@ -51,7 +52,7 @@ const SliderEditor: React.FC = () => {
       y: 50,
       label: '',
       tooltip: { tr: '', en: '' },
-      color: '#3b82f6',
+      color: '#ffffff',
       route: routeOptions[0]?.value || ''
     });
     updateSlides(newSlides);
@@ -129,12 +130,13 @@ const SliderEditor: React.FC = () => {
               {current.hotspots.map((h, hIdx) => (
                 <div
                   key={hIdx}
-                  className="absolute flex items-center justify-center w-8 h-8 text-white rounded-full cursor-pointer group"
+                  className="absolute flex items-center justify-center w-8 h-8 rounded-full cursor-pointer group"
                   style={{
                     top: `${h.y}%`,
                     left: `${h.x}%`,
                     transform: 'translate(-50%, -50%)',
-                    backgroundColor: h.color || '#3b82f6'
+                    backgroundColor: bulletColor,
+                    color: h.color || '#ffffff'
                   }}
                 >
                   {h.label}
@@ -152,7 +154,7 @@ const SliderEditor: React.FC = () => {
           <div className="w-1/2 space-y-2">
             {current.hotspots.map((h, hIdx) => (
               <div key={hIdx} className="border p-2 space-y-1">
-                <div className="flex space-x-2">
+                <div className="flex space-x-2 items-center">
                   <input
                     type="number"
                     className="border p-1 w-20"
@@ -170,6 +172,15 @@ const SliderEditor: React.FC = () => {
                     value={h.label}
                     onChange={(e) => updateHotspot(hIdx, 'label', e.target.value)}
                   />
+                  <label className="flex items-center space-x-1">
+                    <span className="text-sm">{t('admin_hotspot_label_color')}</span>
+                    <input
+                      type="color"
+                      className="border p-1"
+                      value={h.color}
+                      onChange={(e) => updateHotspot(hIdx, 'color', e.target.value)}
+                    />
+                  </label>
                 </div>
                 <div className="flex space-x-2">
                   <input
@@ -185,12 +196,6 @@ const SliderEditor: React.FC = () => {
                     placeholder="EN"
                   />
                 </div>
-                <input
-                  type="color"
-                  className="border p-1 w-full"
-                  value={h.color}
-                  onChange={(e) => updateHotspot(hIdx, 'color', e.target.value)}
-                />
                 <select
                   className="border p-1 w-full"
                   value={h.route}

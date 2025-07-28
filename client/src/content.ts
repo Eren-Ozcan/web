@@ -64,7 +64,7 @@ function normalizeSliders(data: any): Slide[] {
                   tr: h.tooltip?.tr ?? '',
                   en: h.tooltip?.en ?? ''
                 },
-          color: h.color || '#3b82f6',
+          color: h.color || '#ffffff',
           route: h.route || ''
         }))
       : []
@@ -215,7 +215,7 @@ const defaultData: ContentData = {
           y: 20,
           label: '1',
           tooltip: { tr: 'Cam', en: 'Glass' },
-          color: '#3b82f6',
+          color: '#ffffff',
           route: '/article/9'
         },
         {
@@ -223,7 +223,7 @@ const defaultData: ContentData = {
           y: 40,
           label: '2',
           tooltip: { tr: 'Kapı', en: 'Door' },
-          color: '#3b82f6',
+          color: '#ffffff',
           route: '/article/10'
         },
         {
@@ -231,7 +231,7 @@ const defaultData: ContentData = {
           y: 45,
           label: '3',
           tooltip: { tr: 'Balkon', en: 'Balcony' },
-          color: '#3b82f6',
+          color: '#ffffff',
           route: '/article/11'
         }
       ]
@@ -244,7 +244,7 @@ const defaultData: ContentData = {
           y: 30,
           label: '4',
           tooltip: { tr: 'Bahçe', en: 'Garden' },
-          color: '#3b82f6',
+          color: '#ffffff',
           route: '/article/12'
         },
         {
@@ -252,7 +252,7 @@ const defaultData: ContentData = {
           y: 55,
           label: '5',
           tooltip: { tr: 'Ofis', en: 'Office' },
-          color: '#3b82f6',
+          color: '#ffffff',
           route: '/article/13'
         },
         {
@@ -260,7 +260,7 @@ const defaultData: ContentData = {
           y: 65,
           label: '6',
           tooltip: { tr: 'Dış cephe', en: 'Facade' },
-          color: '#3b82f6',
+          color: '#ffffff',
           route: '/article/14'
         }
       ]

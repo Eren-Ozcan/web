@@ -107,6 +107,17 @@ const SliderEditor: React.FC = () => {
             {t('admin_delete')}
           </button>
         )}
+        <label className="flex items-center space-x-2">
+          <span>{t('admin_slider_bullet_color')}</span>
+          <input
+            type="color"
+            className="border p-1"
+            value={content.sliderBulletColor}
+            onChange={(e) =>
+              setContent((prev) => ({ ...prev, sliderBulletColor: e.target.value }))
+            }
+          />
+        </label>
       </div>
       {current && (
         <div className="flex space-x-4">

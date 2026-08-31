@@ -51,7 +51,7 @@ export interface Slide {
 
 function normalizeSliders(data: any): Slide[] {
   if (!Array.isArray(data)) return [];
-  return data.map((s) => ({
+  return data.map((s: any) => ({
     image: s.image || '',
     hotspots: Array.isArray(s.hotspots)
       ? s.hotspots.map((h: any) => ({
